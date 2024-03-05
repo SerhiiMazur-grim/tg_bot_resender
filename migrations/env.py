@@ -30,9 +30,9 @@ target_metadata: MetaData = Base.metadata
 # ... etc.
 
 
-def _get_postgres_dsn() -> str:
+def _get_sqlite_dsn() -> str:
     settings: Settings = Settings()
-    return settings.build_postgres_dsn()
+    return settings.build_sqlite_dsn()
 
 
 def run_migrations_offline() -> None:
@@ -48,7 +48,7 @@ def run_migrations_offline() -> None:
 
     """
     context.configure(
-        url=_get_postgres_dsn(),
+        url=_get_sqlite_dsn(),
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -70,7 +70,7 @@ async def run_async_migrations() -> None:
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-    connectable: AsyncEngine = create_async_engine(url=_get_postgres_dsn())
+    connectable: AsyncEngine = create_async_engine(url=_get_sqlite_dsn())
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)

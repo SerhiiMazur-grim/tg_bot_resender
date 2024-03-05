@@ -8,4 +8,4 @@ class Locale(StrEnum):
     UK = auto()
     RU = auto()
 
-    DEFAULT = EN
+    DEFAULT = UK

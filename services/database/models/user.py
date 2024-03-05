@@ -15,10 +15,10 @@ class DBUser(Base, TimestampMixin):
     id: Mapped[Int64] = mapped_column(primary_key=True)
     name: Mapped[str]
     active: Mapped[bool] = mapped_column(default=True)
-    chat_type: Mapped[str] = mapped_column(String(length=20))
-    subscribe: Mapped[bool] = mapped_column(default=False)
-    premium: Mapped[bool] = mapped_column(default=False)
-    referal: Mapped[str] = mapped_column(String(length=50), nullable=True, default=None)
+    # chat_type: Mapped[str] = mapped_column(String(length=20))
+    # subscribe: Mapped[bool] = mapped_column(default=False)
+    # premium: Mapped[bool] = mapped_column(default=False)
+    # referal: Mapped[str] = mapped_column(String(length=50), nullable=True, default=None)
     locale: Mapped[str] = mapped_column(String(length=2), default=Locale.DEFAULT)
 
     @property

@@ -19,22 +19,22 @@ class UserMiddleware(BaseMiddleware):
     ) -> Optional[Any]:
         aiogram_user: Optional[User] = data.get("event_from_user")
         chat: Optional[Chat] = data.get("event_chat")
-        referal = None
+        # referal = None
         
         if aiogram_user is None or chat is None or aiogram_user.is_bot:
             # Prevents the bot itself from being added to the database
             # when accepting chat_join_request and receiving chat_member.
             return await handler(event, data)
 
-        if event.message:
-            split_text = event.message.text.split() if event.message.text else ""
+        # if event.message:
+        #     split_text = event.message.text.split() if event.message.text else ""
                         
-            if (
-                len(split_text) > 1 
-                and split_text[0] == "/start"
-                and not split_text[1].startswith("val_")
-            ):
-                referal = split_text[1]
+        #     if (
+        #         len(split_text) > 1 
+        #         and split_text[0] == "/start"
+        #         and not split_text[1].startswith("val_")
+        #     ):
+        #         referal = split_text[1]
 
         repository: Repository = data["repository"]
         user: Optional[DBUser] = await repository.user.get(user_id=aiogram_user.id)
@@ -47,7 +47,7 @@ class UserMiddleware(BaseMiddleware):
                     if aiogram_user.language_code in i18n.core.available_locales
                     else cast(str, i18n.core.default_locale)
                 ),
-                referal=referal,
+                # referal=referal,
                 chat=chat,
             )
         data["user"] = user

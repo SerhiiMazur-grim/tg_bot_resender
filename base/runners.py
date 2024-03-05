@@ -8,11 +8,13 @@ from aiohttp import web
 
 from config.settings import Settings
 from utils.loggers import MultilineLogger
+from app.commands import set_commands
 
 
 async def polling_startup(bots: list[Bot], settings: Settings) -> None:
     for bot in bots:
         await bot.delete_webhook(drop_pending_updates=settings.drop_pending_updates)
+        await set_commands(bot)
     if settings.drop_pending_updates:
         loggers.dispatcher.info("Updates skipped successfully")
 
@@ -25,6 +27,7 @@ async def webhook_startup(dispatcher: Dispatcher, bot: Bot, settings: Settings) 
         secret_token=settings.webhook_secret_token,
         drop_pending_updates=settings.drop_pending_updates,
     ):
+        await set_commands(bot)
         return loggers.webhook.info("Bot webhook successfully set on url '%s'", url)
     return loggers.webhook.error("Failed to set main bot webhook on url '%s'", url)
 

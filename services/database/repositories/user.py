@@ -35,13 +35,13 @@ class UserRepository(BaseRepository):
 
 
     async def create_from_telegram(self, user: User, locale: str,
-                                   referal: str | None, chat: Chat) -> DBUser:
+                                   chat: Chat) -> DBUser:
         db_user: DBUser = DBUser(
             id=user.id,
             name=user.full_name,
-            chat_type=chat.type,
-            premium=user.is_premium,
-            referal=referal,
+            # chat_type=chat.type,
+            # premium=user.is_premium,
+            # referal=referal,
             locale=locale,
         )
 

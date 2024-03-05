@@ -6,7 +6,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.redis import RedisStorage
-from aiogram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
+from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 from aiogram_i18n import I18nMiddleware
 from aiogram_i18n.cores import FluentRuntimeCore
@@ -27,7 +27,7 @@ from config.settings import Settings
 
 def _setup_outer_middlewares(dispatcher: Dispatcher, settings: Settings) -> None:
     pool = dispatcher["session_pool"] = create_pool(
-        dsn=settings.build_postgres_dsn(), enable_logging=settings.sqlalchemy_logging
+        dsn=settings.build_sqlite_dsn(), enable_logging=settings.sqlalchemy_logging
     )
     i18n_middleware = dispatcher["i18n_middleware"] = I18nMiddleware(
         core=FluentRuntimeCore(
@@ -76,7 +76,6 @@ def create_dispatcher(settings: Settings) -> Dispatcher:
     )
     
     dispatcher.include_routers(main.router)
-    # dispatcher.include_routers(admin.router, main.router, extra.router)
     
     _setup_outer_middlewares(dispatcher=dispatcher, settings=settings)
     _setup_inner_middlewares(dispatcher=dispatcher)

@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     sqlalchemy_logging: bool
     drop_pending_updates: bool
     
-    admin_chat_id: int
+    admin_id: int
     
     postgres_host: str
     postgres_db: str
@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     postgres_port: str
     postgres_user: str
     postgres_data: str
+    
+    sqlite_db_name: str
     
     redis_host: str
     redis_port: int
@@ -43,3 +45,10 @@ class Settings(BaseSettings):
 
     def build_webhook_url(self) -> str:
         return f"{self.webhook_base_url}{self.webhook_path}"
+    
+    def build_sqlite_dsn(self) -> str:
+        return (
+            "sqlite+aiosqlite:///"
+            f"{self.sqlite_db_name}"
+        )
+    
