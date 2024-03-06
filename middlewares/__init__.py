@@ -1,4 +1,5 @@
 from .outer import DBSessionMiddleware, UserManager, UserMiddleware
+from .inner import AlbumMiddleware
 from .request import RetryRequestMiddleware
 
 __all__ = [
@@ -6,4 +7,5 @@ __all__ = [
     "UserManager",
     "UserMiddleware",
     "RetryRequestMiddleware",
+    "AlbumMiddleware",
 ]

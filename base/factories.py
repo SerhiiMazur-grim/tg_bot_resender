@@ -10,6 +10,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 from aiogram_i18n import I18nMiddleware
 from aiogram_i18n.cores import FluentRuntimeCore
+
 from redis.asyncio import ConnectionPool, Redis
 
 from enums import Locale
@@ -18,9 +19,10 @@ from middlewares import (
     RetryRequestMiddleware,
     UserManager,
     UserMiddleware,
+    AlbumMiddleware
 )
 from services.database import create_pool
-from app.handlers import main
+from app.handlers import main, user, admin
 from utils import msgspec_json as mjson
 from config.settings import Settings
 
@@ -46,6 +48,7 @@ def _setup_outer_middlewares(dispatcher: Dispatcher, settings: Settings) -> None
 
 def _setup_inner_middlewares(dispatcher: Dispatcher) -> None:
     dispatcher.callback_query.middleware(CallbackAnswerMiddleware())
+    dispatcher.message.middleware(AlbumMiddleware())
 
 
 def create_dispatcher(settings: Settings) -> Dispatcher:
@@ -75,7 +78,7 @@ def create_dispatcher(settings: Settings) -> Dispatcher:
         settings=settings,
     )
     
-    dispatcher.include_routers(main.router)
+    dispatcher.include_routers(main.router, user.router, admin.router)
     
     _setup_outer_middlewares(dispatcher=dispatcher, settings=settings)
     _setup_inner_middlewares(dispatcher=dispatcher)
